@@ -19,6 +19,7 @@ var config = {
 var player;
 var platforms;
 var cursors;
+var wasd;
 var stars;
 var score = 0;
 var scoreText;
@@ -84,6 +85,13 @@ function create ()
   });
 
   cursors = this.input.keyboard.createCursorKeys();
+  wasd = this.input.keyboard.addKeys({
+    up:Phaser.Input.Keyboard.KeyCodes.W,
+    down:Phaser.Input.Keyboard.KeyCodes.S,
+    left:Phaser.Input.Keyboard.KeyCodes.A,
+    right:Phaser.Input.Keyboard.KeyCodes.D
+  });
+
 
   this.physics.add.collider(player, platforms);
 
@@ -122,13 +130,13 @@ function create ()
 function update ()
 {
   // make dude move around
-  if (cursors.left.isDown)
+  if (cursors.left.isDown || wasd.left.isDown)
   {
     player.setVelocityX(-160);
 
     player.anims.play('left', true);
   }
-  else if (cursors.right.isDown)
+  else if (cursors.right.isDown || wasd.right.isDown)
   {
     player.setVelocityX(160);
 
@@ -141,7 +149,7 @@ function update ()
     player.anims.play('turn', true);
   }
 
-  if (cursors.up.isDown && player.body.touching.down)
+  if ((cursors.up.isDown || wasd.up.isDown) && (player.body.touching.down))
   {
     player.setVelocityY(-330);
   }
