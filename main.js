@@ -54,6 +54,8 @@ function create ()
   player.setBounce(0.2);
   player.setCollideWorldBounds(true);
 
+
+
   this.anims.create({
     key: 'left',
     frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
@@ -73,6 +75,8 @@ function create ()
     frameRate: 10,
     repeat: -1
   });
+
+  this.physics.add.collider(player, platforms);
 
 }
 
