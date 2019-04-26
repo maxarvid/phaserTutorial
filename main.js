@@ -19,6 +19,7 @@ var config = {
 var player;
 var platforms;
 var cursors;
+var stars;
 
 var game = new Phaser.Game(config);
 
@@ -55,8 +56,6 @@ function create ()
   player.setBounce(0.2);
   player.setCollideWorldBounds(true);
 
-
-
   this.anims.create({
     key: 'left',
     frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
@@ -80,6 +79,23 @@ function create ()
   cursors = this.input.keyboard.createCursorKeys();
 
   this.physics.add.collider(player, platforms);
+
+  // add some stars
+  stars = this.physics.add.group({
+    key: 'star',
+    repeat: 11,
+    setXY: { x: 12, y: 0, stepX: 70 }
+  });
+
+  stars.children.iterate(function (child) {
+
+    child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+
+  });
+
+  this.physics.add.collider(stars, platforms);
+  // check if player overlaps with starts
+  this.physics.add.overlap(player, stars, collectStar, null, this);
 
 }
 
@@ -109,4 +125,9 @@ function update ()
   {
     player.setVelocityY(-330);
   }
+}
+
+function collectStar (player, star)
+{
+  star.disableBody(true, true);
 }
