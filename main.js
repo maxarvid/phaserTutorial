@@ -25,7 +25,7 @@ var scoreText;
 var bombs;
 var particles;
 var emitter;
-var timerEvent;
+var congratsText;
 
 var game = new Phaser.Game(config);
 
@@ -114,12 +114,8 @@ function create ()
 
   this.physics.add.collider(player, bombs, hitBomb, null, this);
 
-  // timer for emitting particles
-  timerEvent = this.time.addEvent({
-    delay: 4000,
-    repeat: 0
-  });
-
+  // prepping some congrats
+  congratsText = this.add.text(300, 300, '', { fontSize: '32px', fill: '#000' });
 
 }
 
@@ -174,16 +170,24 @@ function collectStar (player, star)
     bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
   }
 
-
   // adding some flair
-  particles = this.add.particles('blue');
+  if (score >= 100)
+  {
+    particles = this.add.particles('blue');
   emitter = particles.createEmitter({
     speed: 100,
     scale: { start: 0.2, end: 0 },
     blendMode: 'ADD'
   });
 
-  emitter.startFollow(player);
+  emitter.startFollow(player);  
+  }
+  
+  if (score >= 400)
+  {
+    congratsText.setText('Congratulations James!')
+  }
+  
 }
 
 function hitBomb (player, bomb)
