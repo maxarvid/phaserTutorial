@@ -23,6 +23,9 @@ var stars;
 var score = 0;
 var scoreText;
 var bombs;
+var particles;
+var emitter;
+var timerEvent;
 
 var game = new Phaser.Game(config);
 
@@ -34,6 +37,7 @@ function preload ()
   this.load.image('ground', 'assets/ground.png');
   this.load.image('star', 'assets/star.png');
   this.load.image('bomb', 'assets/bomb.png');
+  this.load.image('blue', 'assets/particle.png');
   this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 
     });
 }
@@ -110,6 +114,13 @@ function create ()
 
   this.physics.add.collider(player, bombs, hitBomb, null, this);
 
+  // timer for emitting particles
+  timerEvent = this.time.addEvent({
+    delay: 4000,
+    repeat: 0
+  });
+
+
 }
 
 function update ()
@@ -162,6 +173,17 @@ function collectStar (player, star)
     bomb.setCollideWorldBounds(true);
     bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
   }
+
+
+  // adding some flair
+  particles = this.add.particles('blue');
+  emitter = particles.createEmitter({
+    speed: 100,
+    scale: { start: 0.2, end: 0 },
+    blendMode: 'ADD'
+  });
+
+  emitter.startFollow(player);
 }
 
 function hitBomb (player, bomb)
