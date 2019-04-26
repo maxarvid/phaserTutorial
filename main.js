@@ -20,6 +20,8 @@ var player;
 var platforms;
 var cursors;
 var stars;
+var score = 0;
+var scoreText;
 
 var game = new Phaser.Game(config);
 
@@ -97,6 +99,9 @@ function create ()
   // check if player overlaps with starts
   this.physics.add.overlap(player, stars, collectStar, null, this);
 
+  // keep track of the score
+  scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '24px', fill: '#000' });
+
 }
 
 function update ()
@@ -130,4 +135,7 @@ function update ()
 function collectStar (player, star)
 {
   star.disableBody(true, true);
+
+  score += 10;
+  scoreText.setText('score: ' + score);
 }
